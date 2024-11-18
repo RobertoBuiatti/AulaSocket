@@ -9,6 +9,12 @@
     <form action="" id="form">
         <input type="text" id="input">
         <button id="enviar">Enviar</button>
+        
+    </form>
+    <form action="" id="form_nickname">
+        <input type="text" id="input_nickname">
+        <button id="enviar">nickname</button>
+        
     </form>
     <ul id="messages">
 
@@ -19,6 +25,8 @@
         const form = document.getElementById('form')
         const input = document.getElementById('input')
         const messages = document.getElementById('messages')
+        const form_nickname = document.getElementById('form_nickname')
+        const input_nickname = document.getElementById('input_nickname')
 
         form.addEventListener('submit', function(e) {
             e.preventDefault()
@@ -29,11 +37,20 @@
             }
         
         })
-        socket.on('chat', function(msg){
+        socket.on('chat', function(msg, nickname){
             let item = document.createElement('li') //<li> <li>
-            item.textContent = msg // <li> msg <li>
+            item.textContent = nickname + ': ' + msg// <li> msg <li>
             messages.appendChild(item) // <ul> <li> msg <li> <ul>
         })
+
+        form_nickname.addEventListener('submit', function(e) {
+            e.preventDefault()
+            if (input_nickname.value){
+                socket.emit('trocaNickname', input_nickname.value)
+                input_nickname.value = ''
+            }
+        })
+
     </script>
 </body>
 </html>

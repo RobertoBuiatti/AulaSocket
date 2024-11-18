@@ -14,12 +14,19 @@ app.get('/', (req, res)=>{
 
 io.on('connection', (socket) => {
     console.log(`um usuario com o id ${socket.id} conectou no servidor` )
+    //Atribui um nickname padrao para cada cliente
+    socket.data.Nickname = socket.id.substring(0, 5) // pega as 5 primeiras palavras da string do id
+    
+
     socket.on('disconnect', () => {
         console.log(`usuário ${socket.id} desconectou`)
     })
     socket.on('chat', (msg) => {
         console.log(`${socket.id} escreveu: ${msg}`)
-        io.emit('chat', msg)
+        io.emit('chat', msg, socket.data.Nickname)
+    })
+    socket.on('trocaNickname', (nickname) => {
+        socket.data.Nickname = nickname
     })
     
 })
