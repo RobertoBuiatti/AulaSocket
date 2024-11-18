@@ -13,7 +13,15 @@ app.get('/', (req, res)=>{
 })
 
 io.on('connection', (socket) => {
-    console.log('a new client connected')
+    console.log(`um usuario com o id ${socket.id} conectou no servidor` )
+    socket.on('disconnect', () => {
+        console.log(`usuário ${socket.id} desconectou`)
+    })
+    socket.on('chat', (msg) => {
+        console.log(`${socket.id} escreveu: ${msg}`)
+        io.emit('chat', msg)
+    })
+    
 })
 
 server.listen(3000, ()=>{
